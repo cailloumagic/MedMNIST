@@ -23,6 +23,7 @@ from visualization import plot_loss, plot_montage, plot_perturbations
 from csv_manager import CSVManager
 from heatmap import HeatmapGenerator
 from image_processing import ImageProcessor
+from config import *
 
 start_script = time.time()
 

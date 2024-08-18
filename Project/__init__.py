@@ -16,5 +16,5 @@ __all__ = [
     'plot_montage',
     'HeatmapGenerator',
     'CSVManager',
-    'get_memory_and_duration'
+    'get_memory_and_duration',
 ]
