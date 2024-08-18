@@ -1,6 +1,7 @@
 import torch
 from torchcam.methods import GradCAMpp
 
+# Parameters
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 download = True
 save = True

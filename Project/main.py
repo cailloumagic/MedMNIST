@@ -6,12 +6,10 @@ import time
 import cv2
 import psutil
 import numpy as np
-import torch
 import torch.nn as nn
 import torch.optim as optim
 import medmnist
 from medmnist import INFO, Evaluator
-from torchcam.methods import GradCAM, GradCAMpp, SmoothGradCAMpp, XGradCAM, LayerCAM, ScoreCAM, SSCAM, ISCAM
 
 # Importing custom modules
 from data_processing import preprocessing, load_datasets_and_dataloaders
