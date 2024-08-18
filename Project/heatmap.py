@@ -45,6 +45,9 @@ class HeatmapGenerator:
         if k < 10:      # Display and save heatmaps for the first 10 images only
             self._create_figure()
 
+        if not self.rmses_image:
+            self.rmses_image = [0] * len(self.perturbations_names_2)
+
         for severities in range(1, 6):
             for i, names in zip(range(6), self.perturbations_names_2):
                 heatmaps_normalized, heatmaps = self._process_layers(severities, i, names)  # Generate heatmaps

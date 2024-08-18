@@ -2,6 +2,9 @@ from tqdm import tqdm
 import time
 import torch
 
+from utils import get_memory_and_duration
+
+
 
 class ModelTrainer:
     def __init__(self, model, train_loader, train_loader_at_eval, optimizer, criterion, device, task, num_epochs,
@@ -38,7 +41,7 @@ class ModelTrainer:
                 self.counter += 1   # Increment early stopping counter
                 if self.counter >= self.patience:
                     print(
-                        f'Early stopping at epoch {epoch + 1} as validation loss did not improve for {patience} epochs.')
+                        f'Early stopping at epoch {epoch + 1} as validation loss did not improve for {self.patience} epochs.')
                     number_epochs = epoch + 1   # Capture the stopping epoch
                     break
 

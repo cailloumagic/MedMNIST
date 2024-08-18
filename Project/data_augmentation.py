@@ -134,7 +134,7 @@ class TestDatasetAugmentor:
                         augmented_datasets_all.append(self.test_dataset)
                         augmented_loaders_all.append(self.test_loader)
 
-        memory_info, training_duration = self.get_memory_and_duration(start_time)
+        memory_info, training_duration = get_memory_and_duration(start_time)
         print(
             f"Augmented testing datasets generated, duration: {training_duration:.2f} seconds, memory used: {int(memory_info.rss / (1024 ** 2))} MB\n")
 

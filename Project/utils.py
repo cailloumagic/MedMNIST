@@ -1,3 +1,6 @@
+import os
+import time
+import psutil
 
 
 def get_memory_and_duration(start_time):
