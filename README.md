@@ -69,8 +69,8 @@ Before you can run the project, ensure you have the following installed:
 After installing the required libraries, you need to ensure that the paths used in the project are correctly set up. This is done in the config.py file, located in the Saliency/ directory.
 
 1. Open the configuration files in a text editor:
-    * Open the config.py file located in the Project/Saliency directory.
-    * Open the config.py file located in the Project/Plot directory.
+    * First file located in the Project/Saliency directory.
+    * Second file located in the Project/Plot directory.
 
 2. Modify the path variables to reflect the correct directories on your system. For example:
 ```python
