@@ -8,10 +8,12 @@ This repository contains the implementation and analysis code for the thesis pro
 Medical image classification is a crucial component of modern healthcare, where accuracy, robustness, and interpretability of AI models are paramount. This thesis project investigates how different MRI sequence-specific image perturbations influence model performance and the potential for these perturbations to correlate with classification errors. By applying interpretability techniques such as saliency maps and analyzing their differences across perturbed and unperturbed images, the project aims to identify specific failure modes and improve the model’s reliability. The research utilizes the MedMNIST dataset, which is a combination of several medical imaging datasets. This comprehensive collection facilitates the evaluation of models across diverse clinical scenarios.
 
 # Key Features
+- MedMNIST Dataset: Use of the MedMNIST dataset, which is a combination of several medical imaging datasets, providing a diverse set of medical images for comprehensive model evaluation.
 - Data Augmentation: Implementation of extensive data augmentation techniques, including Gaussian noise, motion blur, and contrast adjustments, to simulate different levels of perturbations on medical images.
+- ResNet18 Model: Utilization of the ResNet18 architecture for medical image classification to leverage its deep residual learning capabilities for enhanced performance and robustness.
 - Model Interpretability: Use of saliency maps to analyze the model's decision-making process and evaluate how perturbations impact the interpretability of the model.
 - Robustness Analysis: Comprehensive analysis of model robustness through metrics such as Root Mean Squared Error (RMSE) and Area Under the Curve (AUC) across different perturbation severities.
-- Automated Evaluation: Automated scripts for training, testing, and evaluating models on augmented datasets with detailed performance tracking.
+- Plotting and Visualization: Generation of detailed plots and visualizations for metrics such as loss, accuracy, and perturbation effects, to facilitate the interpretation and analysis of model performance and robustness.
 
 # Code Structure
 * [`Project/`](Project/):
