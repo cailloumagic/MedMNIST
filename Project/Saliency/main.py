@@ -45,14 +45,14 @@ else:
     augmented = ''
 
 if false_prediction == True:
-    bool = '_false'
+    bool_flag = '_false'
 else:
-    bool = ''
+    bool_flag = ''
 
 # Set paths for saving outputs based on the operating system
 current_time_0 = current.strftime('%Y-%m-%d-%H-%M-%S') if platform.system() == 'Windows' else adjusted_time.strftime('%Y-%m-%d-%H-%M-%S')
 directory_path_0 = rf'{base_output_dir}\{data_flag}' if platform.system() == 'Windows' else rf'{base_output_dir}/{data_flag}'
-directory_name_0 = f'{current_time_0}_final_4_{data_flag}_{data_size}x{data_size}_stri{strides}_sev{sev}{augmented}{bool}'
+directory_name_0 = f'{current_time_0}_final_4_{data_flag}_{data_size}x{data_size}_stri{strides}_sev{sev}{augmented}{bool_flag}'
 
 # Create directory for the dataset
 if save:
@@ -166,7 +166,7 @@ for label_class in label_classes:   # Loop through each label class
                                    data_transform, model, correct_false_predictions)
         processor.print_memory_usage(k)
         current_time, directory_name_2, directory_name_3, directory_path_3, output_path, csv_rmses_path, csv_rmses_all_path, csv_auc_path = processor.setup_paths(
-            k, data_flag, directory_name_0, directory_name_1, label_class, label_class_name, sev, augmented, bool)
+            k, directory_name_0, directory_name_1, label_class, label_class_name, sev, augmented, bool_flag)
         desired_image_index = processor.select_image(correct_prediction, false_prediction, correct_false_predictions, randomized, index)
         original_class_name, original_image, original_image_uint8, original_tensors, original_tensors_uint8, images_sq, images_uint8, images_ssim = processor.prepare_original_tensors(
             desired_image_index)
@@ -187,7 +187,7 @@ for label_class in label_classes:   # Loop through each label class
 
         plot_montage(k, data_flag, data_size, images_sq, images_uint8, original_image, original_class_name,
                      montage_20_rgb, montage_20, save, directory_path_3, directory_name_2, current_time,
-                     output_path, strides, sev, augmented, bool, method)
+                     output_path, strides, sev, augmented, bool_flag, method)
 
 
         # Initialize variables for RMSE calculation
@@ -199,7 +199,7 @@ for label_class in label_classes:   # Loop through each label class
 
         plot_perturbations(images_ssim, images_uint8, images_sq, original_image,
                                      k, sev, save, current_time, data_flag, data_size, strides,
-                                     augmented, bool, method, output_path)
+                                     augmented, bool_flag, method, output_path)
 
 
         # Instantiate the HeatmapGenerator to create and save heatmaps for the selected image
@@ -207,7 +207,7 @@ for label_class in label_classes:   # Loop through each label class
                                               predicted_class_name, method, augmentation, perturbations_names_2, target_layer_list,
                                               model, original_tensors_grads, original_image, original_image_uint8, images_sq,
                                               results_sev, rmses_image, rmses_saliency_all, rmses_saliency, save, current_time,
-                                              strides, augmented, bool, output_path, device)
+                                              strides, augmented, bool_flag, output_path, device)
         heatmap_generator.generate_and_save_heatmaps(k)
 
         # Calculate RMSE for the saliency maps
