@@ -2,7 +2,7 @@
 
 This repository contains the implementation and analysis code for the thesis project titled "Interpretability-based Robustness Analysis of Medical Image Classification Models." The objective of this thesis is to explore and evaluate the robustness of medical image classification models with a focus on interpretability techniques.
 
-# description
+# Description
 Medical image classification is a critical task with significant implications in healthcare. Ensuring that these models are not only accurate but also robust and interpretable is essential. This thesis project delves into the robustness of these models by applying various perturbations to the input images and analyzing the model's responses using interpretability techniques such as saliency maps. The findings aim to contribute to the development of more reliable and trustworthy AI models in the medical domain.
 
 # Key Features
