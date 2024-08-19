@@ -26,6 +26,7 @@ Medical image classification is a crucial component of modern healthcare, where 
 # Code Structure
 * [`Project/`](Project/):
    * [`Plot/`](Project/Plot/):
+       * [`config.py`](Project/Plot/config.py): Contains configuration settings and constants used throughout the project.
        * [`data_processor.py`](Project/Plot/dataset.py): Prepares and processes data used by the plotting functions.
        * [`file_handler.py`](Project/Plot/file_handler.py): Handles file input/output operations, including reading and writing plot data.
        * [`plot_generator.py`](Project/Plot/plot_generator.py): Main script for creating and displaying plots based on processed data.
