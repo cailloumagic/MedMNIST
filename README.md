@@ -1,7 +1,7 @@
 # Master's Thesis: Interpretability-based robustness analysis of medical image classification models.
 
 This repository contains the implementation and analysis code for the thesis project titled "Interpretability-based Robustness Analysis of Medical Image Classification Models. This project is divided into two main parts:
-1. The main code, which generates saliency maps and calculates metrics such as AUC (Area Under the Curve)
+1. The main code, which generates saliency maps and calculates metrics such as AUC and accuracy.
 2. The generation of plots with these metrics.
 
 # Description
