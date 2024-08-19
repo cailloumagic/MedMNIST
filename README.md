@@ -12,7 +12,7 @@ Medical image classification is a critical task with significant implications in
 - Automated Evaluation: Automated scripts for training, testing, and evaluating models on augmented datasets with detailed performance tracking.
 
 # Code Structure
-*[`Project/'](Project/]:
+* [`Project/'](Project/]:
    * [`Plot/`](Project/Plot/):
        * [`data_processor.py`](Project/Plot/dataset.py): Processes data for plotting and prepares it for visualization.
        * [`file_handler.py`](Project/Plot/file_handler.py): Handles file input/output operations, including reading and writing plot data.
