@@ -12,25 +12,26 @@ Medical image classification is a critical task with significant implications in
 - Automated Evaluation: Automated scripts for training, testing, and evaluating models on augmented datasets with detailed performance tracking.
 
 # Code Structure
-* [`Plot/`](Plot/):
-    * [`data_processor.py`](Plot/dataset.py): Processes data for plotting and prepares it for visualization.
-    * [`file_handler.py`](Plot/file_handler.py): Handles file input/output operations, including reading and writing plot data.
-    * [`plot_generator.py`](Plot/plot_generator.py): Generates plot objects and figures based on processed data.
-    * [`plotting.py`](Plot/plotting.py): Main script for creating and displaying plots based on generated data.
-Saliency/:
-    * [`__init__.py`](Saliency/__init__.py): Initializes the Saliency module.
-    * [`config.py`](Saliency/config.py): Contains configuration settings and constants used throughout the project.
-    * [`csv_manager.py`](Saliency/csv_manager.py): Manages CSV operations, including saving and loading results.
-    * [`data_augmentation.py`](Saliency/data_augmentation.py): Implements data augmentation techniques for testing model robustness.
-    * [`data_processing.py`](Saliency/data_processing.py): Handles data loading, preprocessing, and transformations.
-    * [`evaluation.py`](Saliency/evaluation.py): Scripts for evaluating model performance on various datasets.
-    * [`heatmap.py`](Saliency/heatmap.py): Generates and processes heatmaps for interpretability and saliency analysis.
-    * [`image_processing.py`](Saliency/image_processing.py): Handles image transformations, processing, and preparation for analysis.
-    * [`main.py`](Saliency/main.py): Main execution script that orchestrates data loading, training, testing, and evaluation.
-    * [`model_architecture.py`](Saliency/model_architecture.py): Defines model architectures, including ResNet and other CNNs.
-    * [`model_training.py`](Saliency/model_training.py): Implements model training, validation, and early stopping logic.
-    * [`utils.py`](Saliency/utils.py): Provides utility functions for tasks such as memory tracking and time measurement.
-    * [`visualization.py`](Saliency/visualization.py): Tools for visualizing model interpretability results, such as saliency maps and heatmaps.
+*[`Project/'](Project/]:
+   * [`Plot/`](Project/Plot/):
+       * [`data_processor.py`](Project/Plot/dataset.py): Processes data for plotting and prepares it for visualization.
+       * [`file_handler.py`](Project/Plot/file_handler.py): Handles file input/output operations, including reading and writing plot data.
+       * [`plot_generator.py`](Project/Plot/plot_generator.py): Generates plot objects and figures based on processed data.
+       * [`plotting.py`](Project/Plot/plotting.py): Main script for creating and displaying plots based on generated data.
+   * [`Saliency/`](Project/Saliency/):
+       * [`__init__.py`](Project/Saliency/__init__.py): Initializes the Saliency module.
+       * [`config.py`](Project/Saliency/config.py): Contains configuration settings and constants used throughout the project.
+       * [`csv_manager.py`](Project/Saliency/csv_manager.py): Manages CSV operations, including saving and loading results.
+       * [`data_augmentation.py`](Project/Saliency/data_augmentation.py): Implements data augmentation techniques for testing model robustness.
+       * [`data_processing.py`](Project/Saliency/data_processing.py): Handles data loading, preprocessing, and transformations.
+       * [`evaluation.py`](Project/Saliency/evaluation.py): Scripts for evaluating model performance on various datasets.
+       * [`heatmap.py`](Project/Saliency/heatmap.py): Generates and processes heatmaps for interpretability and saliency analysis.
+       * [`image_processing.py`](Project/Saliency/image_processing.py): Handles image transformations, processing, and preparation for analysis.
+       * [`main.py`](Project/Saliency/main.py): Main execution script that orchestrates data loading, training, testing, and evaluation.
+       * [`model_architecture.py`](Project/Saliency/model_architecture.py): Defines model architectures, including ResNet and other CNNs.
+       * [`model_training.py`](Project/Saliency/model_training.py): Implements model training, validation, and early stopping logic.
+       * [`utils.py`](Project/Saliency/utils.py): Provides utility functions for tasks such as memory tracking and time measurement.
+       * [`visualization.py`](Project/Saliency/visualization.py): Tools for visualizing model interpretability results, such as saliency maps and heatmaps.
 
 
 # Installation and Requirements
