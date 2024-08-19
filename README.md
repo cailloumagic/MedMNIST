@@ -1,15 +1,22 @@
 # Master's Thesis: Interpretability-based robustness analysis of medical image classification models.
 
-This repository contains the implementation and analysis code for the thesis project titled "Interpretability-based Robustness Analysis of Medical Image Classification Models." The objective of this thesis is to explore and evaluate the robustness of medical image classification models with a focus on interpretability techniques.
+This repository contains the implementation and analysis code for the thesis project titled "Interpretability-based Robustness Analysis of Medical Image Classification Models. This project is divided into two main parts:
+1. The main code, which generates saliency maps and calculates metrics such as AUC and accuracy.
+2. The generation of plots for the visualization of these metrics.
 
 # Description
-Medical image classification is a critical task with significant implications in healthcare. Ensuring that these models are not only accurate but also robust and interpretable is essential. This thesis project delves into the robustness of these models by applying various perturbations to the input images and analyzing the model's responses using interpretability techniques such as saliency maps. The findings aim to contribute to the development of more reliable and trustworthy AI models in the medical domain.
+Medical image classification is a crucial component of modern healthcare, where accuracy, robustness, and interpretability of AI models are paramount. This thesis project investigates how different MRI sequence-specific image perturbations influence model performance and the potential for these perturbations to correlate with classification errors. By applying interpretability techniques such as saliency maps and analyzing their differences across perturbed and unperturbed images, the project aims to identify specific failure modes and improve the model’s reliability. The research utilizes the MedMNIST dataset, which is a combination of several medical imaging datasets. This comprehensive collection facilitates the evaluation of models across diverse clinical scenarios.
+
+
 
 # Key Features
-- Data Augmentation: Implementation of extensive data augmentation techniques, including Gaussian noise, motion blur, and contrast adjustments, to simulate different levels of perturbations on medical images.
-- Model Interpretability: Use of saliency maps to analyze the model's decision-making process and evaluate how perturbations impact the interpretability of the model.
-- Robustness Analysis: Comprehensive analysis of model robustness through metrics such as Root Mean Squared Error (RMSE) and Area Under the Curve (AUC) across different perturbation severities.
-- Automated Evaluation: Automated scripts for training, testing, and evaluating models on augmented datasets with detailed performance tracking.
+- **MedMNIST Dataset**: Use of the MedMNIST dataset, which is a combination of several medical imaging datasets, providing a diverse set of medical images for comprehensive model evaluation.
+- **Data Augmentation**: Implementation of extensive data augmentation techniques, including Gaussian noise, motion blur, and contrast adjustments, to simulate different levels of perturbations on medical images.
+- **ResNet18 Model**: Utilization of the ResNet18 architecture for medical image classification to leverage its deep residual learning capabilities for enhanced performance and robustness.
+- **Model Interpretability**: Use of saliency maps to analyze the model's decision-making process and evaluate how perturbations impact the interpretability of the model.
+- **Robustness Analysis**: Comprehensive analysis of model robustness through metrics such as Root Mean Squared Error (RMSE) and Area Under the Curve (AUC) across different perturbation severities.
+- **Plotting and Visualization**: Generation of detailed plots and visualizations for metrics such as loss, accuracy, and perturbation effects, to facilitate the interpretation and analysis of model performance and robustness.
+
 
 # Code Structure
 * [`Project/`](Project/):
