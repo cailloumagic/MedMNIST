@@ -13,9 +13,11 @@ Medical image classification is a crucial component of modern healthcare, where 
 - **MedMNIST Dataset**: Use of the MedMNIST dataset, which is a combination of several medical imaging datasets, providing a diverse set of medical images for comprehensive model evaluation.
 - **Data Augmentation**: Implementation of extensive data augmentation techniques, including Gaussian noise, motion blur, and contrast adjustments, to simulate different levels of perturbations on medical images.
 - **ResNet18 Model**: Utilization of the ResNet18 architecture for medical image classification to leverage its deep residual learning capabilities for enhanced performance and robustness.
+- **Generation of Perturbations**: Application of various perturbations to images to study their effects on model performance and robustness.
 - **Model Interpretability**: Use of saliency maps to analyze the model's decision-making process and evaluate how perturbations impact the interpretability of the model.
 - **Robustness Analysis**: Comprehensive analysis of model robustness through metrics such as Root Mean Squared Error (RMSE) and Area Under the Curve (AUC) across different perturbation severities.
 - **Plotting and Visualization**: Generation of detailed plots and visualizations for metrics such as loss, accuracy, and perturbation effects, to facilitate the interpretation and analysis of model performance and robustness.
+
 
 
 # Code Structure
