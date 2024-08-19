@@ -14,10 +14,10 @@ Medical image classification is a critical task with significant implications in
 # Code Structure
 * [`Project/`](Project/):
    * [`Plot/`](Project/Plot/):
-       * [`data_processor.py`](Project/Plot/dataset.py): Processes data for plotting and prepares it for visualization.
+       * [`data_processor.py`](Project/Plot/dataset.py): Prepares and processes data used by the plotting functions.
        * [`file_handler.py`](Project/Plot/file_handler.py): Handles file input/output operations, including reading and writing plot data.
-       * [`plot_generator.py`](Project/Plot/plot_generator.py): Generates plot objects and figures based on processed data.
-       * [`plotting.py`](Project/Plot/plotting.py): Main script for creating and displaying plots based on generated data.
+       * [`plot_generator.py`](Project/Plot/plot_generator.py): Main script for creating and displaying plots based on processed data.
+       * [`plotting.py`](Project/Plot/plotting.py): Supports plot generation by organizing and structuring plot configurations.
    * [`Saliency/`](Project/Saliency/):
        * [`__init__.py`](Project/Saliency/__init__.py): Initializes the Saliency module.
        * [`config.py`](Project/Saliency/config.py): Contains configuration settings and constants used throughout the project.
@@ -47,9 +47,6 @@ tqdm
 imgaug
 psutil
 
-# Installation
-
-Installation
 
 # Contribution
 This project is part of a Master's thesis, but contributions and discussions are welcome. Feel free to open issues for any bugs or feature requests.
