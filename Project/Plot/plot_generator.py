@@ -21,16 +21,27 @@ class PlotGenerator:
     def generate_plots(self):
         for predicted in self.prediction:
             for augmented in self.augmentation:
-                for sev in range(1, 6):
-                    parent_dirs_with_csv, parent_dirs_with_csv_plot = find_csv_files(self.directory_path_0, sev, augmented, predicted)
-                    if not parent_dirs_with_csv_plot:
-                        break
 
-                    self.generate_rmses_plot(parent_dirs_with_csv_plot, sev, augmented, predicted)
-                    self.generate_scatter_plot(parent_dirs_with_csv, augmented, predicted)
-                    self.generate_scatter_plot_2(parent_dirs_with_csv, augmented, predicted)
-                    self.generate_boxplot(parent_dirs_with_csv, augmented, predicted)
-                    self.generate_boxplot_2(parent_dirs_with_csv, augmented, predicted)
+                # Initialize a list to collect directories with CSV files across all severities
+                accumulated_dirs_with_csv = []
+
+                # Loop through severities to accumulate directories with CSV files
+                for sev in range(1, 6):
+                    parent_dirs_with_csv, parent_dirs_with_csv_plot = find_csv_files(self.directory_path_0, sev,
+                                                                                     augmented, predicted)
+                    if parent_dirs_with_csv:
+                        # Accumulate directories with CSV files
+                        accumulated_dirs_with_csv.extend(parent_dirs_with_csv)
+
+                    if parent_dirs_with_csv_plot:
+                        self.generate_rmses_plot(parent_dirs_with_csv_plot, sev, augmented, predicted)
+
+                # After collecting all directories with CSV files, generate other plots
+                if accumulated_dirs_with_csv:
+                    self.generate_scatter_plot(accumulated_dirs_with_csv, augmented, predicted)
+                    self.generate_scatter_plot_2(accumulated_dirs_with_csv, augmented, predicted)
+                    self.generate_boxplot(accumulated_dirs_with_csv, augmented, predicted)
+                    self.generate_boxplot_2(accumulated_dirs_with_csv, augmented, predicted)
 
     def generate_rmses_plot(self, parent_dirs_with_csv_plot, sev, augmented, predicted):
         fig, axs = plt.subplots(len(parent_dirs_with_csv_plot), 5, figsize=(30, 5 * len(parent_dirs_with_csv_plot)), squeeze=False)
@@ -119,13 +130,26 @@ class PlotGenerator:
             print(f"\nScatter plot 2 - Augmentation={augmented} - Correct_prediction={predicted}:")
             print("   Dataset: ", os.path.basename(os.path.dirname(parent_dir)))
 
-            rmses_all_files, auc_files, class_labels, datas_nb, datas_nb_tot, max_x, max_y, min_y = get_scatter_plot_2_data(
-                parent_dir)
+            # Get data
+            try:
+                rmses_all_files, auc_files, class_labels, datas_nb, datas_nb_tot, max_x, max_y, min_y = get_scatter_plot_2_data(
+                    parent_dir)
+            except Exception as e:
+                print(f"Error fetching data for Scatter plot 2: {e}")
+                continue
 
             for l, (auc_file, rmses_all_file) in enumerate(zip(auc_files, rmses_all_files)):
                 print("      Class: ", class_labels[l])
-                auc_data = pd.read_csv(auc_file, header=None)
-                rmses_all_data = pd.read_csv(rmses_all_file, header=None)
+                try:
+                    auc_data = pd.read_csv(auc_file, header=None)
+                    rmses_all_data = pd.read_csv(rmses_all_file, header=None)
+                except Exception as e:
+                    print(f"Error reading files for class {class_labels[l]}: {e}")
+                    continue
+
+                if rmses_all_data.empty or auc_data.empty:
+                    print(f"Empty data for class {class_labels[l]}. Skipping...")
+                    continue
 
                 # Define target_labels after rmses_all_data has been set
                 target_labels = [f'{i}_{j}' for i in range(1, rmses_all_data.shape[1] // 2 + 1) for j in range(1, 3)]
@@ -140,6 +164,7 @@ class PlotGenerator:
                         print(f"\r          Image Number: {count}/{datas_nb[l]}", end='', flush=True)
                     else:
                         print(f"\r          Image Number: {count}/{datas_nb[l]}\n", end='', flush=True)
+
                     min_range = 1 + (5 * k)
                     max_range = 6 + (5 * k)
                     for j in range(8):

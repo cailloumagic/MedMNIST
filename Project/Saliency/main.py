@@ -1,7 +1,6 @@
 import os
 import re
 from datetime import datetime, timedelta
-import platform
 import time
 import cv2
 import psutil
@@ -24,31 +23,7 @@ from image_processing import ImageProcessor
 from config import *
 
 start_script = time.time()
-
-# Parameters
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("Device: ", device)
-
-download = True
-save = True
-csv = True
-randomized = True
-correct_prediction = True
-false_prediction = False
-augmentation = False
-
-data_flag = 'breastmnist'
-method = GradCAMpp
-data_size = 64  # Size available 64, 128 and 224
-NUM_EPOCHS = 15
-strides = 2
-BATCH_SIZE = 64
-lr = 0.001
-patience = 10
-sev = 1
-nb_images = 6  # Number of images max to calculate heatmap
-index = 1521  # Work only if randomized, correct_prediction and false_prediction are False
-
 
 info = INFO[data_flag]
 task = info['task']     # Type of task (e.g., binary, multi-label)
@@ -75,14 +50,9 @@ else:
     bool = ''
 
 # Set paths for saving outputs based on the operating system
-if platform.system() == 'Windows':  # Windows
-    current_time_0 = current.strftime('%Y-%m-%d-%H-%M-%S')
-    directory_path_0 = rf'C:\Users\pierr\Desktop\Cours\BME4\Coding\Outputs\{data_flag}'
-    directory_name_0 = f'{current_time_0}_final_4_{data_flag}_{data_size}x{data_size}_stri{strides}_sev{sev}{augmented}{bool}'
-else:   # Linux
-    current_time_0 = adjusted_time.strftime('%Y-%m-%d-%H-%M-%S')
-    directory_path_0 = rf'/home/ptreyer/Outputs/{data_flag}'
-    directory_name_0 = f'{current_time_0}_final_4_{data_flag}_{data_size}x{data_size}_stri{strides}_sev{sev}{augmented}{bool}'
+current_time_0 = current.strftime('%Y-%m-%d-%H-%M-%S') if platform.system() == 'Windows' else adjusted_time.strftime('%Y-%m-%d-%H-%M-%S')
+directory_path_0 = rf'{base_output_dir}\{data_flag}' if platform.system() == 'Windows' else rf'{base_output_dir}/{data_flag}'
+directory_name_0 = f'{current_time_0}_final_4_{data_flag}_{data_size}x{data_size}_stri{strides}_sev{sev}{augmented}{bool}'
 
 # Create directory for the dataset
 if save:

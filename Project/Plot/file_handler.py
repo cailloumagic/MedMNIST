@@ -1,5 +1,8 @@
 import os
+import sys
 import platform
+
+from config import *
 
 def set_directory_paths(directory_name):
     if platform.system() == 'Windows':
@@ -28,8 +31,8 @@ def find_csv_files(directory_path_0, sev, augmented, predicted):
                     if parent_dir not in parent_dirs_with_csv and sev == 1:
                         parent_dirs_with_csv.append(parent_dir)
 
+    print("dir:", parent_dirs_with_csv, parent_dirs_with_csv_plot)
     return parent_dirs_with_csv, parent_dirs_with_csv_plot
-
 
 def match_conditions(file, sev, augmented, predicted):
     if augmented and predicted and f"sev{sev}" in file and "augmented" in file and not "false" in file:

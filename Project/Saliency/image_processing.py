@@ -6,7 +6,7 @@ import psutil
 import numpy as np
 import torchvision.transforms as transforms
 import random
-
+from config import base_output_dir, data_flag
 
 class ImageProcessor:
     def __init__(self, data_flag, directory_name_0, directory_name_1, data_nb, data_nb_tot, augmented_datasets_sev,
@@ -41,27 +41,26 @@ class ImageProcessor:
         adjusted_time = current + timedelta(hours=2)
         return current, adjusted_time
 
-    def setup_paths(self, k, data_flag, directory_name_0, directory_name_1, label_class, label_class_name, sev,
-                    augmented, bool):
-        if platform.system() == 'Windows':  # Paths for Windows
+    def setup_paths(self, k, directory_name_0, directory_name_1, label_class, label_class_name, sev, augmented, bool):
+        # Use base_output_dir from the config file
+        if platform.system() == 'Windows':
             current_time = self.current.strftime('%Y-%m-%d-%H-%M-%S')
-            directory_path_3 = rf'C:\Users\pierr\Desktop\Cours\BME4\Coding\Outputs\{data_flag}\{directory_name_0}\{directory_name_1}'
+            directory_path_3 = rf'{base_output_dir}\{data_flag}\{directory_name_0}\{directory_name_1}'
             directory_name_2 = f'{k}'
             directory_name_3 = "metrics"
-            output_path = fr'C:\Users\pierr\Desktop\Cours\BME4\Coding\Outputs\{data_flag}\{directory_name_0}\{directory_name_1}\{directory_name_2}'
-            csv_rmses_path = rf'C:\Users\pierr\Desktop\Cours\BME4\Coding\Outputs\{data_flag}\{directory_name_0}\{directory_name_3}\{data_flag}_sev{sev}{augmented}{bool}_rmses'
-            csv_rmses_all_path = rf'C:\Users\pierr\Desktop\Cours\BME4\Coding\Outputs\{data_flag}\{directory_name_0}\{directory_name_3}\{data_flag}_{label_class}_{label_class_name}_{self.data_nb}^{self.data_nb_tot}_images{augmented}{bool}_rmses_all'
-            csv_auc_path = rf'C:\Users\pierr\Desktop\Cours\BME4\Coding\Outputs\{data_flag}\{directory_name_0}\{directory_name_3}\{data_flag}{augmented}{bool}_auc'
-
+            output_path = fr'{base_output_dir}\{data_flag}\{directory_name_0}\{directory_name_1}\{directory_name_2}'
+            csv_rmses_path = rf'{base_output_dir}\{data_flag}\{directory_name_0}\{directory_name_3}\{data_flag}_sev{sev}{augmented}{bool}_rmses'
+            csv_rmses_all_path = rf'{base_output_dir}\{data_flag}\{directory_name_0}\{directory_name_3}\{data_flag}_{label_class}_{label_class_name}_{self.data_nb}^{self.data_nb_tot}_images{augmented}{bool}_rmses_all'
+            csv_auc_path = rf'{base_output_dir}\{data_flag}\{directory_name_0}\{directory_name_3}\{data_flag}{augmented}{bool}_auc'
         else:  # Paths for Linux
             current_time = self.adjusted_time.strftime('%Y-%m-%d-%H-%M-%S')
-            directory_path_3 = rf'/home/ptreyer/Outputs/{data_flag}/{directory_name_0}/{directory_name_1}'
+            directory_path_3 = rf'{base_output_dir}/{data_flag}/{directory_name_0}/{directory_name_1}'
             directory_name_2 = f'{k}'
             directory_name_3 = "metrics"
-            output_path = fr'/home/ptreyer/Outputs/{data_flag}/{directory_name_0}/{directory_name_1}/{directory_name_2}'
-            csv_rmses_path = rf'/home/ptreyer/Outputs/{data_flag}/{directory_name_0}/{directory_name_3}/{data_flag}_sev{sev}{augmented}{bool}_rmses'
-            csv_rmses_all_path = rf'/home/ptreyer/Outputs/{data_flag}/{directory_name_0}/{directory_name_3}/{data_flag}_{label_class}_{label_class_name}_{self.data_nb}^{self.data_nb_tot}_images{augmented}{bool}_rmses_all'
-            csv_auc_path = rf'/home/ptreyer/Outputs/{data_flag}/{directory_name_0}/{directory_name_3}/{data_flag}{augmented}{bool}_auc'
+            output_path = fr'{base_output_dir}/{data_flag}/{directory_name_0}/{directory_name_1}/{directory_name_2}'
+            csv_rmses_path = rf'{base_output_dir}/{data_flag}/{directory_name_0}/{directory_name_3}/{data_flag}_sev{sev}{augmented}{bool}_rmses'
+            csv_rmses_all_path = rf'{base_output_dir}/{data_flag}/{directory_name_0}/{directory_name_3}/{data_flag}_{label_class}_{label_class_name}_{self.data_nb}^{self.data_nb_tot}_images{augmented}{bool}_rmses_all'
+            csv_auc_path = rf'{base_output_dir}/{data_flag}/{directory_name_0}/{directory_name_3}/{data_flag}{augmented}{bool}_auc'
 
         return current_time, directory_name_2, directory_name_3, directory_path_3, output_path, csv_rmses_path, csv_rmses_all_path, csv_auc_path
 
