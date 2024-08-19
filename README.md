@@ -72,10 +72,11 @@ After installing the required libraries, you need to ensure that the paths used 
 
 2. Modify the path variables to reflect the correct directories on your system. For example:
 ```python
-# Example path configuration in config.py
-OUTPUT_DIR = '/path/to/output/directory'
-DATA_DIR = '/path/to/data/directory'
-MODEL_DIR = '/path/to/model/directory'
+# Define base output directory paths based on the operating system
+if platform.system() == 'Windows':
+    base_output_dir = r'YOUR_WINDOWS_OUTPUT_DIRECTORY'
+else:  # Path for Linux
+    base_output_dir = r'YOUR_LINUX_OUTPUT_DIRECTORY'
 ```
 
 # Contribution
