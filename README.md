@@ -53,7 +53,18 @@ Before you can run the project, ensure you have the following installed:
 - torchcam
 - scikit-image
 
+## Path Configuration
+After installing the required libraries, you need to ensure that the paths used in the project are correctly set up. This is done in the config.py file, located in the Saliency/ directory.
 
+1. Open the config.py file in a text editor.
+
+2. Modify the path variables to reflect the correct directories on your system. For example:
+```python
+# Example path configuration in config.py
+OUTPUT_DIR = '/path/to/output/directory'
+DATA_DIR = '/path/to/data/directory'
+MODEL_DIR = '/path/to/model/directory'
+```
 
 # Contribution
 This project is part of a Master's thesis, but contributions and discussions are welcome. Feel free to open issues for any bugs or feature requests.
