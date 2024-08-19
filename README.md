@@ -38,14 +38,14 @@ Medical image classification is a critical task with significant implications in
 ## Prerequisites
 Before you can run the project, ensure you have the following installed:
 
-Python 3.8+
-PyTorch
-torchvision
-OpenCV
-NumPy
-tqdm
-imgaug
-psutil
+- Python 3.8+
+- PyTorch
+- torchvision
+- OpenCV
+- NumPy
+- tqdm
+- imgaug
+- psutil
 
 
 # Contribution
