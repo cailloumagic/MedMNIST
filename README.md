@@ -7,20 +7,26 @@ This repository contains the implementation and analysis code for the thesis pro
 # Description
 Medical image classification is a crucial component of modern healthcare, where accuracy, robustness, and interpretability of AI models are paramount. This thesis project investigates how different MRI sequence-specific image perturbations influence model performance and the potential for these perturbations to correlate with classification errors. By applying interpretability techniques such as saliency maps and analyzing their differences across perturbed and unperturbed images, the project aims to identify specific failure modes and improve the model’s reliability. The research utilizes the MedMNIST dataset, which is a combination of several medical imaging datasets. This comprehensive collection facilitates the evaluation of models across diverse clinical scenarios.
 
+![Overview of the Project](Images/Saliency_maps.png)
+
+
 
 
 # Key Features
 - **MedMNIST Dataset**: Use of the MedMNIST dataset, which is a combination of several medical imaging datasets, providing a diverse set of medical images for comprehensive model evaluation.
 - **Data Augmentation**: Implementation of extensive data augmentation techniques, including Gaussian noise, motion blur, and contrast adjustments, to simulate different levels of perturbations on medical images.
 - **ResNet18 Model**: Utilization of the ResNet18 architecture for medical image classification to leverage its deep residual learning capabilities for enhanced performance and robustness.
+- **Generation of Perturbations**: Application of various perturbations to images to study their effects on model performance and robustness.
 - **Model Interpretability**: Use of saliency maps to analyze the model's decision-making process and evaluate how perturbations impact the interpretability of the model.
 - **Robustness Analysis**: Comprehensive analysis of model robustness through metrics such as Root Mean Squared Error (RMSE) and Area Under the Curve (AUC) across different perturbation severities.
 - **Plotting and Visualization**: Generation of detailed plots and visualizations for metrics such as loss, accuracy, and perturbation effects, to facilitate the interpretation and analysis of model performance and robustness.
 
 
+
 # Code Structure
 * [`Project/`](Project/):
    * [`Plot/`](Project/Plot/):
+       * [`config.py`](Project/Plot/config.py): Contains path configuration settings and constants used throughout the project.
        * [`data_processor.py`](Project/Plot/dataset.py): Prepares and processes data used by the plotting functions.
        * [`file_handler.py`](Project/Plot/file_handler.py): Handles file input/output operations, including reading and writing plot data.
        * [`plot_generator.py`](Project/Plot/plot_generator.py): Main script for creating and displaying plots based on processed data.
@@ -63,14 +69,17 @@ Before you can run the project, ensure you have the following installed:
 ## Path Configuration
 After installing the required libraries, you need to ensure that the paths used in the project are correctly set up. This is done in the config.py file, located in the Saliency/ directory.
 
-1. Open the config.py file in a text editor.
+1. Open the configuration files in a text editor:
+    * First file located in the Project/Saliency directory.
+    * Second file located in the Project/Plot directory.
 
 2. Modify the path variables to reflect the correct directories on your system. For example:
 ```python
-# Example path configuration in config.py
-OUTPUT_DIR = '/path/to/output/directory'
-DATA_DIR = '/path/to/data/directory'
-MODEL_DIR = '/path/to/model/directory'
+# Define base output directory paths based on the operating system
+if platform.system() == 'Windows':
+    base_output_dir = r'YOUR_WINDOWS_OUTPUT_DIRECTORY'
+else:  # Path for Linux
+    base_output_dir = r'YOUR_LINUX_OUTPUT_DIRECTORY'
 ```
 
 # Contribution
