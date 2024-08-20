@@ -39,10 +39,10 @@ class PlotGenerator:
 
                 # After collecting all directories with CSV files, generate other plots
                 if accumulated_dirs_with_csv:
-                    self.generate_boxplot_2(accumulated_dirs_with_csv, augmented, predicted)
-                    self.generate_boxplot(accumulated_dirs_with_csv, augmented, predicted)
-                    self.generate_scatter_plot_2(accumulated_dirs_with_csv, augmented, predicted)
                     self.generate_scatter_plot(accumulated_dirs_with_csv, augmented, predicted)
+                    self.generate_scatter_plot_2(accumulated_dirs_with_csv, augmented, predicted)
+                    self.generate_boxplot(accumulated_dirs_with_csv, augmented, predicted)
+                    self.generate_boxplot_2(accumulated_dirs_with_csv, augmented, predicted)
 
     def generate_rmses_plot(self, parent_dirs_with_csv_plot, sev, augmented, predicted):
         fig, axs = plt.subplots(len(parent_dirs_with_csv_plot), 5, figsize=(30, 5 * len(parent_dirs_with_csv_plot)),
