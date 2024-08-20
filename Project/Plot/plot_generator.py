@@ -2,6 +2,7 @@ from file_handler import set_directory_paths, find_csv_files
 from data_processor import get_files_and_labels, get_scatter_plot_data, get_scatter_plot_2_data
 from plotting import Plotting
 import os
+import math
 import matplotlib.pyplot as plt
 import pandas as pd
 
@@ -15,7 +16,7 @@ class PlotGenerator:
         self.color_label = ['y', 'r', 'g', 'b', 'k']
         self.hatch_label = ['////', '\\\\\\', '|||', '-', '+', 'x', 'o', 'O', '.', '*']
         self.prediction = [True, False]
-        self.augmentation = [True, False]
+        self.augmentation = [False, True]
         self.plotting = Plotting(self.title_label, self.marker_label, self.color_label, self.hatch_label)
 
     def generate_plots(self):
@@ -38,19 +39,30 @@ class PlotGenerator:
 
                 # After collecting all directories with CSV files, generate other plots
                 if accumulated_dirs_with_csv:
-                    self.generate_scatter_plot(accumulated_dirs_with_csv, augmented, predicted)
-                    self.generate_scatter_plot_2(accumulated_dirs_with_csv, augmented, predicted)
-                    self.generate_boxplot(accumulated_dirs_with_csv, augmented, predicted)
                     self.generate_boxplot_2(accumulated_dirs_with_csv, augmented, predicted)
+                    self.generate_boxplot(accumulated_dirs_with_csv, augmented, predicted)
+                    self.generate_scatter_plot_2(accumulated_dirs_with_csv, augmented, predicted)
+                    self.generate_scatter_plot(accumulated_dirs_with_csv, augmented, predicted)
 
     def generate_rmses_plot(self, parent_dirs_with_csv_plot, sev, augmented, predicted):
-        fig, axs = plt.subplots(len(parent_dirs_with_csv_plot), 5, figsize=(30, 5 * len(parent_dirs_with_csv_plot)), squeeze=False)
-        plt.suptitle(f"Saliency maps RMSEs\nseverity {sev} - Augmentation: {augmented} - Correct prediction: {predicted}", fontsize=28)
+        fig, axs = plt.subplots(len(parent_dirs_with_csv_plot), 5, figsize=(30, 5 * len(parent_dirs_with_csv_plot)),
+                                squeeze=False)
+        plt.suptitle(
+            f"Saliency maps RMSEs\nseverity {sev} - Augmentation: {augmented} - Correct prediction: {predicted}",
+            fontsize=28)
+
+        # Calculate maximum value for y-axis limit
+        # Assuming that rmses_data is available here or calculate for the entire dataset
+        rmses_data = pd.concat([pd.read_csv(file, header=None) for file in
+                                [get_files_and_labels(parent)[0][0] for parent in parent_dirs_with_csv_plot]])
+        max_rmses_data = rmses_data.iloc[1:].max().max()
+        max_rmses_data += 5
+        max_rmses_data = math.ceil(max_rmses_data / 5) * 5
 
         for dir_index, parent in enumerate(parent_dirs_with_csv_plot):
             rmses_files, auc_files, class_labels = get_files_and_labels(parent)
             for rmses_file, auc_file in zip(rmses_files, auc_files):
-                self.plotting.plot_rmses(axs, rmses_file, auc_file, class_labels, dir_index, sev)
+                self.plotting.plot_rmses(axs, rmses_file, auc_file, class_labels, dir_index, sev, max_rmses_data)
 
             axs[dir_index, 0].text(-0.15, 0.5, f'{os.path.basename(os.path.dirname(parent))}',
                                    va='center', ha='right', rotation=90, transform=axs[dir_index, 0].transAxes,
@@ -58,7 +70,8 @@ class PlotGenerator:
 
         plt.tight_layout(rect=[0.03, 0, 0.97, 0.95])
         print(f"\nCombined RMSEs plot sev{sev} - Augmentation={augmented} - Correct_prediction={predicted} generated")
-        save_path = os.path.join(self.directory_path_1, f'RMSEs_plot_combined_sev{sev}{self.get_suffix(augmented, predicted)}.png')
+        save_path = os.path.join(self.directory_path_1,
+                                 f'RMSEs_plot_combined_sev{sev}{self.get_suffix(augmented, predicted)}.png')
         plt.savefig(save_path)
         plt.close(fig)
 
@@ -167,23 +180,36 @@ class PlotGenerator:
 
                     min_range = 1 + (5 * k)
                     max_range = 6 + (5 * k)
-                    for j in range(8):
-                        for i in range(min_range, max_range):
-                            x_data_serie = rmses_all_data.iloc[i, j::8].tolist()
-                            y_data_serie = auc_data.iloc[(5 * l) + (i - min_range + 1)].tolist()
 
-                            for h in range(5):
-                                axs[i - min_range, j].scatter(x_data_serie[h], y_data_serie[h],
-                                                              marker=self.marker_label[l],
-                                                              color=self.color_label[h])
+                    for j in range(8):  # layers
 
-                            if i - min_range == 0:
-                                axs[i - min_range, j].set_title(f'Layer {target_labels[j]}', fontsize=22)
+                        for h in range(5):  # perturbations
 
-                            axs[i - min_range, j].set_xlabel('RMSEs')
-                            axs[i - min_range, j].set_ylabel('Deltas AUC')
-                            axs[i - min_range, j].set_ylim(min_y, max_y)
-                            axs[i - min_range, j].set_xlim(0, max_x)
+                            for i in range(min_range, max_range):  # severities
+                                x_data_serie = rmses_all_data.iloc[i, j::8].tolist()
+                                y_data_serie = auc_data.iloc[(5 * l) + (i - min_range + 1)].tolist()
+                                y_data_serie = auc_data.iloc[((5 * l) + (i - min_range + 1))]
+                                y_data_serie = y_data_serie.tolist()
+
+                                x_data = x_data_serie[h]
+                                y_data = y_data_serie[h]
+
+                                axs[h, j].scatter(x_data, y_data, marker=self.marker_label[l],
+                                                  color=self.color_label[i - min_range])
+
+                            if h == 0:
+                                axs[h, j].set_title(f'Layer {target_labels[j]}', fontsize=22)
+
+                            if k == 0:
+                                # Add text to the left of the first plot of each row
+                                axs[h, 0].text(-0.3, 0.5, self.title_label[h],
+                                               va='center', ha='right', rotation=90,
+                                               transform=axs[h, 0].transAxes, fontsize=22)
+
+                                axs[h, j].set_xlabel('RMSEs')
+                                axs[h, j].set_ylabel('Deltas AUC')
+                                axs[h, j].set_ylim(min_y, max_y)
+                                axs[h, j].set_xlim(0, max_x)
 
             self.plotting.add_legend_scatter_plot_2(fig, class_labels, datas_nb, datas_nb_tot)
             plt.tight_layout(rect=[0.02, 0.02, 0.99, 0.98])

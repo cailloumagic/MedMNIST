@@ -31,6 +31,9 @@ def find_csv_files(directory_path_0, sev, augmented, predicted):
                     if parent_dir not in parent_dirs_with_csv and sev == 1:
                         parent_dirs_with_csv.append(parent_dir)
 
+    parent_dirs_with_csv.sort()
+    parent_dirs_with_csv_plot.sort()
+
     return parent_dirs_with_csv, parent_dirs_with_csv_plot
 
 def match_conditions(file, sev, augmented, predicted):
