@@ -3,8 +3,9 @@ import numpy as np
 import imgaug.augmenters as iaa
 import matplotlib.pyplot as plt
 from skimage.metrics import mean_squared_error as mse
+from config import randomized
 
-def plot_loss(train_losses, valid_losses, number_epochs, save, directory_path, current_time,
+def plot_loss(train_losses, valid_losses, number_epochs, save, directory_path_1, directory_path_2, current_time_0,
               data_flag, data_size, label_class_name):
     plt.plot(range(1, len(train_losses) + 1), train_losses, label='Train Loss')
     plt.plot(range(1, len(valid_losses) + 1), valid_losses, label='Validation Loss')
@@ -22,16 +23,20 @@ def plot_loss(train_losses, valid_losses, number_epochs, save, directory_path, c
         x_ticks.append(len(train_losses))
     plt.xticks(x_ticks)
 
-    if save and directory_path:
-        filename = f'{current_time}_{data_flag}_{data_size}x{data_size}_class_{label_class_name}_validation_loss.png'
-        plt.savefig(os.path.join(directory_path, filename))
+    if save and randomized == True:
+        filename = f'{current_time_0}_{data_flag}_{data_size}x{data_size}_class_{label_class_name}_validation_loss.png'
+        plt.savefig(os.path.join(directory_path_2, filename))
+    elif save and randomized == False:
+        filename = f'{current_time_0}_{data_flag}_{data_size}x{data_size}_validation_loss.png'
+        plt.savefig(os.path.join(directory_path_1, filename))
 
     plt.close()
 
 
 def plot_montage(k, data_flag, data_size, images_sq, images_uint8, original_image, original_class_name, montage_20_rgb,
-                 montage_20, save, directory_path_3, directory_name_2, current_time, output_path, strides, sev,
-                 augmented, bool, method):
+                 montage_20, save, directory_path_1, directory_name_2, directory_path_3, current_time, output_path, strides, sev,
+                 augmented, bool_flag, randomized, method):
+
     if k < 10:  # Display and save montages for the first 10 images only
 
         plt.figure(figsize=(10, 5))
@@ -56,19 +61,23 @@ def plot_montage(k, data_flag, data_size, images_sq, images_uint8, original_imag
         plt.title('20x20 Images')
 
         # Save the figure with date and time in the filename
-        if save:
+        if save and randomized == True:
             path = os.path.join(directory_path_3, directory_name_2)
             os.makedirs(path, exist_ok=True)
-            filename = f'{current_time}_final_4_{data_flag}_{data_size}x{data_size}_stri{strides}_sev{sev}{augmented}{bool}_{method.__name__}_a_montage.png'
+            filename = f'{current_time}_{data_flag}_{data_size}x{data_size}_stri{strides}_sev{sev}{augmented}{bool_flag}_{method.__name__}_a_montage.png'
             plt.savefig(os.path.join(output_path, filename))
+
+        elif save and randomized == False:
+            filename = f'{current_time}_{data_flag}_{data_size}x{data_size}_stri{strides}_sev{sev}{augmented}{bool_flag}_{method.__name__}_a_montage.png'
+            plt.savefig(os.path.join(directory_path_1, filename))
 
         plt.close()
 
 
 
 def plot_perturbations(images_ssim, images_uint8, images_sq, original_image,
-                                 k, sev, save, current_time, data_flag, data_size, strides,
-                                 augmented, bool, method, output_path):
+                                 k, sev, save, directory_path_1, current_time, data_flag, data_size, strides,
+                                 augmented, bool_flag, method, output_path, randomized):
 
     if k < 10:  # Display and save perturbations for the first 10 images only
 
@@ -146,9 +155,14 @@ def plot_perturbations(images_ssim, images_uint8, images_sq, original_image,
 
         plt.tight_layout()      # Adjust layout to prevent overlap
 
-        if save:
-            filename = f'{current_time}_final_4_{data_flag}_{data_size}x{data_size}_stri{strides}_sev{sev}{augmented}{bool}_{method.__name__}_perturbations.png'
+        if save and randomized == True:
+            filename = f'{current_time}_{data_flag}_{data_size}x{data_size}_stri{strides}_sev{sev}{augmented}{bool_flag}_{method.__name__}_perturbations.png'
             fig.savefig(os.path.join(output_path, filename))
+
+        elif save and randomized == False:
+            filename = f'{current_time}_{data_flag}_{data_size}x{data_size}_stri{strides}_sev{sev}{augmented}{bool_flag}_{method.__name__}_perturbations.png'
+            plt.savefig(os.path.join(directory_path_1, filename))
+        plt.close()
 
         plt.close(fig)
         del fig, axs

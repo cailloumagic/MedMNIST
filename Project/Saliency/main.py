@@ -3,12 +3,13 @@ import re
 from datetime import datetime, timedelta
 import time
 import cv2
+import sys
 import psutil
 import numpy as np
 import torch.nn as nn
 import torch.optim as optim
 import medmnist
-from medmnist import INFO, Evaluator
+from medmnist import Evaluator, INFO
 
 # Importing custom modules
 from data_processing import preprocessing, load_datasets_and_dataloaders
@@ -38,6 +39,16 @@ perturbations_names_2 = ['original', 'gaussian', 'speckle', 'motion_blurred', 'c
 perturbations_names_3 = 6 * perturbations_names_2
 repeated_severities_list = [num for num in range(1, 6) for _ in range(6)]
 
+
+# Check if the user parameters are valid
+if correct_prediction == True and false_prediction == True:
+    print("Correct and false predictions cannot be set to True at the same time.")
+    sys.exit(1)
+
+if (correct_prediction == True and randomized == False) or (false_prediction == True and randomized == False):
+    print("Warning: The correct_prediction and false_prediction flags are set to True, but the randomized flag is set to False. Therefore the index parameter defined will not correspond to the index of the image.")
+
+
 # Define the files name according to user parameters
 if augmentation == True:
     augmented = '_augmented'
@@ -49,10 +60,12 @@ if false_prediction == True:
 else:
     bool_flag = ''
 
+
 # Set paths for saving outputs based on the operating system
 current_time_0 = current.strftime('%Y-%m-%d-%H-%M-%S') if platform.system() == 'Windows' else adjusted_time.strftime('%Y-%m-%d-%H-%M-%S')
 directory_path_0 = rf'{base_output_dir}\{data_flag}' if platform.system() == 'Windows' else rf'{base_output_dir}/{data_flag}'
-directory_name_0 = f'{current_time_0}_final_4_{data_flag}_{data_size}x{data_size}_stri{strides}_sev{sev}{augmented}{bool_flag}'
+directory_name_0 = f'{current_time_0}_{data_flag}_{data_size}x{data_size}_stri{strides}_sev{sev}{augmented}{bool_flag}'
+
 
 # Create directory for the dataset
 if save:
@@ -61,6 +74,7 @@ if save:
         os.mkdir(path)
     path = os.path.join(directory_path_0, directory_name_0)
     os.mkdir(path)
+
 
 # Preprocess and load the datasets and dataloaders
 data_transform, augmented_transform = preprocessing()
@@ -93,7 +107,7 @@ for label_class in label_classes:   # Loop through each label class
         directory_path_1 = rf'/home/ptreyer/Outputs/{data_flag}/{directory_name_0}'
         directory_name_1 = f"class_{label_class}_{label_class_name}"
 
-    if save:  # create a subdirectory to save the figures
+    if save and randomized == True:  # create a subdirectory to save the figures
         path = os.path.join(directory_path_1, directory_name_1)
         os.mkdir(path)
 
@@ -132,15 +146,32 @@ for label_class in label_classes:   # Loop through each label class
     else:
         directory_path_2 = rf'/home/ptreyer/Outputs/{data_flag}/{directory_name_0}/{directory_name_1}'
 
+
     if number_epochs != 1:  # Plot the training and validation loss
-        plot_loss(train_losses, valid_losses, number_epochs, save, directory_path_2,
-                  current_time_0, data_flag, data_size, label_class_name)
+        plot_loss(train_losses, valid_losses, number_epochs, save, directory_path_1, directory_path_2, current_time_0,
+                  data_flag, data_size, label_class_name)
 
 
     # Evaluate the model on original and perturbed datasets
-    tester = ModelTester(model, device, train_loader, train_dataset, augmented_loaders_all, Evaluator, data_flag,
-                         data_size, task, augmentation, label_class, correct_prediction, perturbations_names_3,
-                         repeated_severities_list, sev)
+    tester = ModelTester(
+        model,
+        device,
+        train_loader,
+        train_dataset,
+        augmented_loaders_all,
+        Evaluator,
+        data_flag,
+        data_size,
+        task,
+        augmentation,
+        label_class,
+        correct_prediction,
+        false_prediction,
+        randomized,
+        perturbations_names_3,
+        repeated_severities_list,
+        sev
+    )
     tester.evaluate('train')
     tester.evaluate('test')
     data_nb_tot, correct_false_predictions, predictions, results, results_sev, deltas_auc = tester.get_variable()
@@ -173,8 +204,8 @@ for label_class in label_classes:   # Loop through each label class
         original_tensors_grads = processor.prepare_tensors_with_grads(desired_image_index)
         target_layer_list = processor.identify_target_layers()
 
-
-        correct_false_predictions.remove(desired_image_index)   # To not process the same image twice
+        if randomized == True:
+            correct_false_predictions.remove(desired_image_index)   # To not process the same image twice
 
 
         # Get the predicted class label and name for the selected image
@@ -186,8 +217,8 @@ for label_class in label_classes:   # Loop through each label class
         montage_20_rgb = cv2.cvtColor(np.array(montage_20), cv2.COLOR_RGB2BGR)
 
         plot_montage(k, data_flag, data_size, images_sq, images_uint8, original_image, original_class_name,
-                     montage_20_rgb, montage_20, save, directory_path_3, directory_name_2, current_time,
-                     output_path, strides, sev, augmented, bool_flag, method)
+                     montage_20_rgb, montage_20, save, directory_path_1, directory_name_2, directory_path_3, current_time, output_path,
+                     strides, sev, augmented, bool_flag, randomized, method)
 
 
         # Initialize variables for RMSE calculation
@@ -198,8 +229,8 @@ for label_class in label_classes:   # Loop through each label class
         slices_rmses_all_tot = []
 
         plot_perturbations(images_ssim, images_uint8, images_sq, original_image,
-                                     k, sev, save, current_time, data_flag, data_size, strides,
-                                     augmented, bool_flag, method, output_path)
+                           k, sev, save, directory_path_1, current_time, data_flag, data_size, strides,
+                           augmented, bool_flag, method, output_path, randomized)
 
 
         # Instantiate the HeatmapGenerator to create and save heatmaps for the selected image
@@ -207,7 +238,7 @@ for label_class in label_classes:   # Loop through each label class
                                               predicted_class_name, method, augmentation, perturbations_names_2, target_layer_list,
                                               model, original_tensors_grads, original_image, original_image_uint8, images_sq,
                                               results_sev, rmses_image, rmses_saliency_all, rmses_saliency, save, current_time,
-                                              strides, augmented, bool_flag, output_path, device)
+                                              strides, augmented, bool_flag, output_path, directory_path_1, device)
         heatmap_generator.generate_and_save_heatmaps(k)
 
         # Calculate RMSE for the saliency maps
@@ -220,6 +251,9 @@ for label_class in label_classes:   # Loop through each label class
     if csv == True: # Save the Metrics to a CSV file
         csv_manager.save_auc_to_csv(deltas_auc)
         csv_manager.save_rmse_to_csv(rmses_saliency_tot, data_nb)
+
+    if randomized == False:
+        break
 
 # Calculate and print the total duration of the script execution
 end_script = time.time()

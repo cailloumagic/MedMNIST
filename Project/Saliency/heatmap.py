@@ -5,12 +5,13 @@ from PIL import Image
 import torch
 import matplotlib.pyplot as plt
 from skimage.metrics import mean_squared_error as mse
+from config import randomized
 
 class HeatmapGenerator:
     def __init__(self, data_flag, data_size, sev, desired_image_index, number_epochs, original_class_name,
                  predicted_class_name, method, augmentation, perturbations_names_2, target_layer_list, model,
                  original_tensors_grads, original_image, original_image_uint8, images_sq, results_sev, rmses_image,
-                 rmses_saliency_all, rmses_saliency, save, current_time, strides, augmented, bool, output_path, device):
+                 rmses_saliency_all, rmses_saliency, save, current_time, strides, augmented, bool_flag, output_path, directory_path_1, device):
         self.data_flag = data_flag
         self.data_size = data_size
         self.sev = sev
@@ -35,8 +36,9 @@ class HeatmapGenerator:
         self.current_time = current_time
         self.strides = strides
         self.augmented = augmented
-        self.bool = bool
+        self.bool_flag = bool_flag
         self.output_path = output_path
+        self.directory_path_1 = directory_path_1
         self.device = device
         self.heatmaps_original = []
         self.count = -1
@@ -154,9 +156,12 @@ class HeatmapGenerator:
     def _finalize_figure(self):
         plt.tight_layout()
 
-        if self.save:
-            filename = f'{self.current_time}_final_4_{self.data_flag}_{self.data_size}x{self.data_size}_stri{self.strides}_sev{self.sev}{self.augmented}{self.bool}_{self.method.__name__}_saliency.png'
+        if self.save and randomized == True:
+            filename = f'{self.current_time}_{self.data_flag}_{self.data_size}x{self.data_size}_stri{self.strides}_sev{self.sev}{self.augmented}{self.bool_flag}_{self.method.__name__}_saliency.png'
             self.fig.savefig(os.path.join(self.output_path, filename))
+        elif self.save and randomized == False:
+            filename = f'{self.current_time}_{self.data_flag}_{self.data_size}x{self.data_size}_stri{self.strides}_sev{self.sev}{self.augmented}{self.bool_flag}_{self.method.__name__}_saliency.png'
+            self.fig.savefig(os.path.join(self.directory_path_1, filename))
 
         plt.close(self.fig)
         del self.fig, self.axs

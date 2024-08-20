@@ -5,7 +5,6 @@ import torch
 import torch.utils.data as data
 from tqdm import tqdm
 import imgaug.augmenters as iaa
-
 from utils import get_memory_and_duration
 
 

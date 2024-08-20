@@ -25,6 +25,7 @@ class ImageProcessor:
         self.model = model
         self.correct_false_predictions = correct_false_predictions
         self.rmses_saliency_all_tot = []
+        self.data_nb = data_nb
 
         # Initialize current and adjusted_time variables
         self.current, self.adjusted_time = self.adjust_time()
@@ -32,7 +33,10 @@ class ImageProcessor:
     def print_memory_usage(self, k):  # Print current memory usage along image index
         process = psutil.Process(os.getpid())
         memory_info = process.memory_info()
-        print(f"\rImage number: {k + 1} / {self.data_nb}, memory used: {int(memory_info.rss / (1024 ** 2))} MB", end='',
+        if k != self.data_nb - 1:
+            print(f"\rImage number: {k + 1} / {self.data_nb}, memory used: {int(memory_info.rss / (1024 ** 2))} MB", end='', flush=True)
+        else:
+            print(f"\rImage number: {k + 1} / {self.data_nb}, memory used: {int(memory_info.rss / (1024 ** 2))} MB\n", end='',
               flush=True)
 
     def adjust_time(self):

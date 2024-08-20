@@ -4,7 +4,7 @@ import torch.nn.functional as F
 
 
 class ModelTester:
-    def __init__(self, model, device, train_loader, train_dataset, augmented_loaders_all, evaluator_class, data_flag, data_size, task, augmentation, label_class, correct_prediction, perturbations_names_3, repeated_severities_list, sev):
+    def __init__(self, model, device, train_loader, train_dataset, augmented_loaders_all, evaluator_class, data_flag, data_size, task, augmentation, label_class, correct_prediction, false_prediction, randomized, perturbations_names_3, repeated_severities_list, sev):
         self.model = model
         self.device = device
         self.train_loader = train_loader
@@ -17,7 +17,9 @@ class ModelTester:
         self.augmentation = augmentation
 
         self.label_class = label_class
+        self.false_prediction = false_prediction
         self.correct_prediction = correct_prediction
+        self.randomized = randomized
         self.perturbations_names_3 = perturbations_names_3
         self.repeated_severities_list = repeated_severities_list
         self.sev = sev
@@ -119,6 +121,8 @@ class ModelTester:
                 self.correct_false_predictions = self.correct_predictions
             elif self.false_prediction:
                 self.correct_false_predictions = self.false_predictions
+            elif self.randomized == False:
+                self.correct_false_predictions = self.predictions
 
             if not self.correct_false_predictions:
                 print("No correct predictions made")

@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import pandas as pd
+from config import csv
 
 
 class CSVManager:
@@ -13,9 +14,10 @@ class CSVManager:
         self.create_directory()
 
     def create_directory(self):
-        path = os.path.join(self.directory_path_1, self.directory_name_3)
-        if not os.path.isdir(path):
-            os.mkdir(path)
+        if csv == True:
+            path = os.path.join(self.directory_path_1, self.directory_name_3)
+            if not os.path.isdir(path):
+                os.mkdir(path)
 
     def save_rmse_all_to_csv(self, slices_rmses_all_tot):
         df_saliency_all = pd.DataFrame(slices_rmses_all_tot)  # severities x (perturbations x layers)
@@ -49,7 +51,7 @@ class CSVManager:
 
         if not os.path.isfile(self.csv_auc_path):
             df_auc.to_csv(self.csv_auc_path, index=False)
-            print("New CSV file created successfully.\n")
+            print("\nNew CSV file created successfully.")
         else:
             df_auc.to_csv(self.csv_auc_path, mode='a', index=False, header=False)
-            print("Data appended to CSV file successfully.\n")
+            print("\nData appended to CSV file successfully.")
