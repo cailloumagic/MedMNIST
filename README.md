@@ -67,7 +67,7 @@ Before you can run the project, ensure you have the following installed:
 - scikit-image
 
 ## Path Configuration
-After installing the required libraries, you need to ensure that the paths used in the project are correctly set up. This is done in the config.py file, located in the Saliency/ directory.
+After installing the required libraries, you need to ensure that the paths used in the project are correctly set up. This is done in the config.py files, located in the Saliency/ directory.
 
 1. Open the configuration files in a text editor:
     * First file located in the Project/Saliency directory.
